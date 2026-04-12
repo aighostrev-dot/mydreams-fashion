@@ -43,6 +43,14 @@
             background: linear-gradient(135deg, rgba(255,105,180,0.78), rgba(180,120,220,0.72), rgba(100,180,255,0.68));
             z-index: 2;
         }
+
+        .modal-close {
+            transition: all 0.2s ease;
+        }
+        .modal-close:hover {
+            transform: rotate(90deg);
+            color: #e11d48;
+        }
     </style>
 </head>
 <body class="bg-pink-50 overflow-x-hidden">
@@ -112,23 +120,23 @@
         // ==================== SLIDESHOW ====================
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
-        const dots = document.querySelectorAll('.slide-dot');
 
         function showSlide(index) {
             slides.forEach(s => s.classList.remove('active'));
-            dots.forEach(d => d.classList.remove('active'));
             slides[index].classList.add('active');
-            dots[index].classList.add('active');
             currentSlide = index;
         }
         setInterval(() => showSlide((currentSlide + 1) % slides.length), 5800);
 
-        // ==================== AUTH SYSTEM (Simple) ====================
+        // ==================== AUTH SYSTEM ====================
         let currentUser = null;
 
         function openLogin() {
             const html = `
-                <div class="p-8">
+                <div class="p-8 relative">
+                    <button onclick="closeModal()" class="modal-close absolute top-5 right-5 text-3xl text-gray-400 hover:text-pink-600">
+                        ×
+                    </button>
                     <div class="text-center mb-8">
                         <span class="text-4xl">🌸</span>
                         <h2 class="text-2xl font-semibold text-pink-600 mt-4">Selamat Datang Kembali</h2>
@@ -157,7 +165,10 @@
 
         function openRegister() {
             const html = `
-                <div class="p-8">
+                <div class="p-8 relative">
+                    <button onclick="closeModal()" class="modal-close absolute top-5 right-5 text-3xl text-gray-400 hover:text-pink-600">
+                        ×
+                    </button>
                     <div class="text-center mb-8">
                         <span class="text-4xl">🌸</span>
                         <h2 class="text-2xl font-semibold text-pink-600 mt-4">Buat Akun Baru</h2>
@@ -184,24 +195,14 @@
         function handleRegister() {
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
-            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            const confirm = document.getElementById('regConfirmPassword').value;
 
-            if (!email || !password) {
-                alert("Email dan Password wajib diisi");
-                return;
-            }
-            if (password !== confirmPassword) {
-                alert("Konfirmasi password tidak cocok");
-                return;
-            }
-            if (password.length < 6) {
-                alert("Password minimal 6 karakter");
-                return;
-            }
+            if (!email || !password) return alert("Email dan Password wajib diisi");
+            if (password !== confirm) return alert("Konfirmasi password tidak cocok");
+            if (password.length < 6) return alert("Password minimal 6 karakter");
 
-            // Simpan ke localStorage
             localStorage.setItem('myDreamsUser', JSON.stringify({ email, password }));
-            alert("🎉 Pendaftaran berhasil! Silakan login.");
+            alert("🎉 Pendaftaran berhasil!");
             closeModal();
             setTimeout(openLogin, 500);
         }
@@ -214,7 +215,7 @@
 
             if (savedUser && savedUser.email === email && savedUser.password === password) {
                 currentUser = savedUser;
-                alert(`✅ Login berhasil! Selamat datang kembali, ${email}`);
+                alert(`✅ Login berhasil! Selamat datang, ${email}`);
                 closeModal();
                 updateAuthButtons();
             } else {
@@ -223,15 +224,12 @@
         }
 
         function updateAuthButtons() {
-            const authDiv = document.getElementById('authButtons');
-            if (currentUser) {
-                authDiv.innerHTML = `
-                    <button onclick="logout()" 
-                            class="px-7 py-3 border border-pink-300 rounded-3xl text-pink-600 hover:bg-pink-50 transition-all font-medium">
-                        Keluar (${currentUser.email})
-                    </button>
-                `;
-            }
+            const div = document.getElementById('authButtons');
+            div.innerHTML = `
+                <button onclick="logout()" class="px-7 py-3 border border-pink-300 rounded-3xl text-pink-600 hover:bg-pink-50 transition-all font-medium">
+                    Keluar (${currentUser.email})
+                </button>
+            `;
         }
 
         function logout() {
@@ -252,11 +250,14 @@
 
         function showComingSoon(feature) {
             const html = `
-                <div class="p-10 text-center">
+                <div class="p-10 relative text-center">
+                    <button onclick="closeModal()" class="modal-close absolute top-5 right-5 text-3xl text-gray-400 hover:text-pink-600">
+                        ×
+                    </button>
                     <div class="text-6xl mb-6">🌸</div>
                     <h2 class="text-2xl font-semibold text-pink-600 mb-3">${feature}</h2>
-                    <p class="text-gray-600">Fitur ini sedang dalam pengembangan.</p>
-                    <button onclick="closeModal()" class="mt-8 px-10 py-4 bg-pink-600 text-white rounded-3xl">Mengerti</button>
+                    <p class="text-gray-600">Fitur ini sedang dalam pengembangan.<br>Kami akan segera menghadirkan fitur ini.</p>
+                    <button onclick="closeModal()" class="mt-8 px-10 py-4 bg-pink-600 text-white rounded-3xl hover:bg-pink-700 transition">Mengerti</button>
                 </div>
             `;
             document.getElementById('modalContent').innerHTML = html;
@@ -269,13 +270,12 @@
 
         // Inisialisasi
         window.onload = () => {
-            // Cek apakah sudah login sebelumnya
             const savedUser = JSON.parse(localStorage.getItem('myDreamsUser'));
             if (savedUser) {
                 currentUser = savedUser;
                 updateAuthButtons();
             }
-            console.log("%c🌸 MY Dreams - Login System aktif", "color:#db2777; font-size:16px");
+            console.log("%c🌸 MY Dreams - Login System aktif dengan tombol X", "color:#db2777");
         };
     </script>
 </body>
