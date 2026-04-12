@@ -1,58 +1,87 @@
-// ==================== FLUX PROXY (AMAN) ====================
+<script>
+    // ==================== SLIDESHOW (tetap) ====================
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const dots = document.querySelectorAll('.slide-dot');
 
-async function generateWithFlux(prompt) {
-    const btn = document.getElementById('generateBtn');
-    const originalHTML = btn.innerHTML;
-    
-    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating with Flux...`;
-    btn.disabled = true;
-
-    try {
-        const response = await fetch('/api/generate-flux', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ prompt })
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) throw new Error(result.error || 'Failed to generate');
-
-        showFluxResult(result.imageUrl, prompt);
-
-    } catch (err) {
-        alert("❌ Gagal: " + err.message);
-        console.error(err);
-    } finally {
-        btn.innerHTML = originalHTML;
-        btn.disabled = false;
+    function showSlide(index) {
+        slides.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        slides[index].classList.add('active');
+        dots[index].classList.add('active');
+        currentSlide = index;
     }
-}
 
-// Tampilkan hasil (sama seperti sebelumnya)
-function showFluxResult(imageUrl, prompt) {
-    const resultHTML = `
-        <div class="p-10 text-center">
-            <h3 class="text-3xl font-semibold text-pink-600 mb-4">✨ Desain Flux Berhasil!</h3>
-            <p class="text-gray-600 mb-6">"${prompt}"</p>
-            <div class="bg-white p-3 rounded-3xl shadow-xl inline-block">
-                <img src="${imageUrl}" alt="Fashion Design" class="max-w-md w-full rounded-2xl">
-            </div>
-            <div class="flex gap-4 mt-10">
-                <button onclick="closeModal()" class="flex-1 py-4 border-2 border-pink-300 text-pink-600 rounded-3xl font-medium">Buat Desain Baru</button>
-                <button onclick="window.open('${imageUrl}', '_blank')" class="flex-1 py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl font-medium">Download Gambar</button>
-            </div>
-        </div>
-    `;
-    document.getElementById('modalContent').innerHTML = resultHTML;
-}
-
-// Panggil fungsi
-function generateAI() {
-    const prompt = document.getElementById('promptInput').value.trim();
-    if (!prompt) {
-        alert("Silakan tulis deskripsi baju impianmu 🌸");
-        return;
+    function nextSlide() {
+        showSlide((currentSlide + 1) % slides.length);
     }
-    generateWithFlux(prompt);
-}
+    setInterval(nextSlide, 5800);
+
+    // ==================== FLUX PROXY (AMAN) ====================
+    async function generateWithFlux(prompt) {
+        const btn = document.getElementById('generateBtn');
+        if (!btn) return;
+
+        const originalHTML = btn.innerHTML;
+        btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Generating with Flux...`;
+        btn.disabled = true;
+
+        try {
+            const response = await fetch('/api/generate-flux', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ prompt })
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) throw new Error(result.error || 'Failed to generate');
+
+            showFluxResult(result.imageUrl, prompt);
+
+        } catch (err) {
+            alert("❌ Gagal generate gambar: " + err.message);
+            console.error(err);
+        } finally {
+            btn.innerHTML = originalHTML;
+            btn.disabled = false;
+        }
+    }
+
+    function showFluxResult(imageUrl, prompt) {
+        const resultHTML = `
+            <div class="p-10 text-center">
+                <h3 class="text-3xl font-semibold text-pink-600 mb-4">✨ Desain Flux Berhasil!</h3>
+                <p class="text-gray-600 mb-6">"${prompt}"</p>
+                
+                <div class="bg-white p-3 rounded-3xl shadow-xl inline-block">
+                    <img src="${imageUrl}" alt="Fashion Design" class="max-w-md w-full rounded-2xl">
+                </div>
+
+                <div class="flex gap-4 mt-10">
+                    <button onclick="closeModal()" class="flex-1 py-4 border-2 border-pink-300 text-pink-600 rounded-3xl font-medium">Buat Desain Baru</button>
+                    <button onclick="window.open('${imageUrl}', '_blank')" class="flex-1 py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl font-medium">Download Gambar</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('modalContent').innerHTML = resultHTML;
+    }
+
+    function generateAI() {
+        const prompt = document.getElementById('promptInput').value.trim();
+        if (!prompt) {
+            alert("Silakan tulis deskripsi baju impianmu 🌸");
+            return;
+        }
+        generateWithFlux(prompt);
+    }
+
+    // Modal functions lainnya...
+    function closeModal() {
+        document.getElementById('modal').classList.add('hidden');
+    }
+
+    window.onload = () => {
+        console.log("%c🌸 MY Dreams siap!", "color:#db2777");
+    };
+</script>
