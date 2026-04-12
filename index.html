@@ -13,9 +13,9 @@
         .logo-font { font-family: 'Playfair Display', serif; }
 
         .hero-bg {
-            background: linear-gradient(135deg, rgba(255,182,193,0.85), rgba(216,191,216,0.85), rgba(173,216,230,0.85)),
+            background: linear-gradient(135deg, rgba(255,182,193,0.88), rgba(216,191,216,0.85), rgba(173,216,230,0.8)),
                         url('https://picsum.photos/id/1015/2000/1200') center/cover fixed;
-            animation: flowerFloat 40s ease infinite;
+            animation: flowerFloat 45s ease infinite;
         }
         @keyframes flowerFloat {
             0% { background-position: 0% 50%; }
@@ -23,26 +23,18 @@
             100% { background-position: 0% 50%; }
         }
 
-        .petal {
+        .sakura-petal {
             position: absolute;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             pointer-events: none;
-            z-index: 10;
-            animation: fall linear infinite;
-            opacity: 0.85;
+            z-index: 5;
+            opacity: 0.9;
+            animation: sakuraFall linear infinite;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
-        @keyframes fall {
-            to {
-                transform: translateY(100vh) rotate(720deg);
-            }
-        }
-
-        .modal {
-            animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        @keyframes modalPop {
-            from { opacity: 0; transform: scale(0.7) translateY(50px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+        @keyframes sakuraFall {
+            0%   { transform: translateY(-100px) rotate(0deg); }
+            100% { transform: translateY(110vh) rotate(720deg); }
         }
     </style>
 </head>
@@ -71,10 +63,10 @@
         </div>
     </nav>
 
-    <!-- Hero -->
+    <!-- Hero dengan Sakura Petals -->
     <section id="hero" class="hero-bg min-h-screen flex items-center text-white relative overflow-hidden">
-        <!-- Petal Container -->
-        <div id="petals" class="absolute inset-0 pointer-events-none"></div>
+        <!-- Sakura Petals Container -->
+        <div id="sakuraContainer" class="absolute inset-0 pointer-events-none"></div>
 
         <div class="max-w-5xl mx-auto px-6 text-center z-10">
             <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-6 py-2 rounded-full mb-6">
@@ -93,46 +85,56 @@
 
     <!-- Modal -->
     <div id="modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
-        <div id="modalContent" class="bg-white rounded-3xl max-w-lg w-full mx-4 overflow-hidden modal shadow-2xl">
-            <div class="p-8">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 id="modalTitle" class="text-2xl font-semibold text-pink-600"></h2>
-                    <button onclick="closeModal()" class="text-3xl text-gray-400 hover:text-gray-600">×</button>
-                </div>
-                <div id="modalBody" class="text-gray-600 leading-relaxed min-h-[120px]"></div>
-            </div>
-            <div class="border-t p-4 flex justify-end bg-gray-50">
-                <button onclick="closeModal()" 
-                        class="px-8 py-3 bg-pink-600 text-white rounded-3xl hover:bg-pink-700 transition">
-                    Tutup
-                </button>
-            </div>
+        <div id="modalContent" class="bg-white rounded-3xl max-w-lg w-full mx-4 overflow-hidden shadow-2xl">
+            <!-- Modal content akan diisi via JS -->
         </div>
     </div>
 
     <script>
-        // === Animasi Petal ===
-        function createPetals() {
-            const container = document.getElementById('petals');
-            const flowers = ['🌸', '🌺', '🌼', '🪻', '🌻'];
-            
+        // Animasi Kelopak Sakura Asli
+        function createSakuraPetals() {
+            const container = document.getElementById('sakuraContainer');
+            const sakuraEmojis = ['🌸', '🌺', '🪻', '🌼'];
+
             setInterval(() => {
                 const petal = document.createElement('div');
-                petal.className = 'petal';
-                petal.textContent = flowers[Math.floor(Math.random() * flowers.length)];
-                petal.style.left = Math.random() * 100 + 'vw';
-                petal.style.animationDuration = (Math.random() * 8 + 10) + 's';
-                petal.style.fontSize = (Math.random() * 1.4 + 1.6) + 'rem';
+                petal.className = 'sakura-petal';
+                petal.textContent = sakuraEmojis[Math.floor(Math.random() * sakuraEmojis.length)];
+                
+                // Mulai dari kanan atas
+                petal.style.right = Math.random() * 40 + 'vw';   // lebih ke kanan
+                petal.style.top = '-60px';
+                
+                // Variasi kecepatan & ukuran
+                const duration = Math.random() * 12 + 14;
+                petal.style.animationDuration = duration + 's';
+                petal.style.fontSize = (Math.random() * 1.2 + 1.4) + 'rem';
+                
+                // Variasi delay
+                petal.style.animationDelay = Math.random() * 2 + 's';
+                
                 container.appendChild(petal);
 
-                setTimeout(() => petal.remove(), 18000);
-            }, 220);
+                // Hapus setelah jatuh
+                setTimeout(() => petal.remove(), duration * 1000 + 1000);
+            }, 180);
         }
 
-        // === Modal Functions ===
-        function showModal(title, content) {
-            document.getElementById('modalTitle').innerHTML = title;
-            document.getElementById('modalBody').innerHTML = content;
+        // Modal Function
+        function showModal(title, htmlContent) {
+            const modalHTML = `
+                <div class="p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-semibold text-pink-600">${title}</h2>
+                        <button onclick="closeModal()" class="text-3xl text-gray-400 hover:text-gray-600">×</button>
+                    </div>
+                    <div class="text-gray-600">${htmlContent}</div>
+                </div>
+                <div class="border-t p-4 flex justify-end bg-gray-50">
+                    <button onclick="closeModal()" class="px-8 py-3 bg-pink-600 text-white rounded-3xl hover:bg-pink-700">Tutup</button>
+                </div>
+            `;
+            document.getElementById('modalContent').innerHTML = modalHTML;
             document.getElementById('modal').classList.remove('hidden');
         }
 
@@ -140,89 +142,40 @@
             document.getElementById('modal').classList.add('hidden');
         }
 
-        // Fitur-fitur
+        // Fungsi tombol
         function openAIDesign() {
-            const content = `
-                <p class="mb-4 text-lg font-medium">✨ AI Design Studio</p>
-                <textarea id="promptInput" rows="4" class="w-full p-4 border border-pink-200 rounded-2xl focus:border-pink-400 outline-none resize-none" 
-                    placeholder="Contoh: baju pesta wanita motif bunga sakura warna pastel, lengan puff, panjang midi..."></textarea>
-                <button onclick="generateDesign()" 
-                        class="mt-6 w-full py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl font-medium hover:scale-105 transition">
-                    Generate Desain Sekarang
+            showModal("AI Design Studio", `
+                <textarea id="prompt" rows="4" class="w-full p-4 border border-pink-200 rounded-2xl focus:border-pink-400" 
+                    placeholder="Deskripsikan baju impianmu... (contoh: baju pantai one piece motif sakura)"></textarea>
+                <button onclick="generateAI()" class="mt-6 w-full py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl font-medium">
+                    Generate Desain
                 </button>
-            `;
-            showModal("AI Design Studio", content);
+            `);
         }
 
-        function generateDesign() {
-            const prompt = document.getElementById('promptInput').value.trim() || "baju cantik motif bunga";
+        function generateAI() {
             closeModal();
-            
             setTimeout(() => {
                 showModal("Hasil AI Design", `
-                    <div class="text-center">
-                        <div class="text-6xl mb-4">👗</div>
-                        <p class="text-pink-600 font-medium">"${prompt}"</p>
-                        <p class="text-sm text-gray-500 mt-6">Desain berhasil dibuat oleh AI!</p>
-                        <p class="text-xs text-gray-400 mt-2">Fitur preview gambar & edit lanjutan sedang dikembangkan.</p>
+                    <div class="text-center py-4">
+                        <div class="text-7xl mb-4">👗</div>
+                        <p class="text-pink-600 font-medium">Desain berhasil dibuat!</p>
+                        <p class="text-sm text-gray-500 mt-2">Fitur preview gambar sedang dikembangkan</p>
                     </div>
                 `);
-            }, 600);
+            }, 500);
         }
 
-        function openLiveChat() {
-            showModal("Live Chat", `<p class="text-center py-8">💬 Fitur Live Chat dengan desainer sedang dalam pengembangan.</p>`);
-        }
-
-        function openModelCriteria() {
-            showModal("Kriteria Model", `
-                <ul class="space-y-3 text-sm">
-                    <li>✅ Ukuran XS - 5XL</li>
-                    <li>✅ Bentuk tubuh (Hourglass, Pear, dll)</li>
-                    <li>✅ Tinggi badan & warna kulit</li>
-                    <li>✅ Pose & gaya favorit</li>
-                </ul>
-            `);
-        }
-
-        function openFabricTypes() {
-            showModal("Jenis Kain Premium", `
-                <div class="grid grid-cols-2 gap-4 text-sm">
-                    <div>🌸 Satin Flowy</div>
-                    <div>☁️ Cotton Organic</div>
-                    <div>🌿 Linen Natural</div>
-                    <div>✨ Chiffon Dreamy</div>
-                </div>
-            `);
-        }
-
-        function openLogin() {
-            showModal("Masuk ke MY Dreams", `
-                <p class="mb-6 text-center">Silakan masuk ke akun kamu</p>
-                <input type="text" placeholder="Email atau Nomor HP" class="w-full p-4 border rounded-2xl mb-4">
-                <input type="password" placeholder="Password" class="w-full p-4 border rounded-2xl mb-6">
-                <button onclick="closeModal()" class="w-full py-4 bg-pink-600 text-white rounded-3xl">Masuk</button>
-            `);
-        }
-
-        function openRegister() {
-            showModal("Daftar Akun Baru", `
-                <p class="mb-6 text-center">Buat akun gratis sekarang</p>
-                <input type="text" placeholder="Nama Lengkap" class="w-full p-4 border rounded-2xl mb-3">
-                <input type="email" placeholder="Email" class="w-full p-4 border rounded-2xl mb-6">
-                <button onclick="closeModal()" class="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl">Daftar Sekarang</button>
-            `);
-        }
-
-        // Close modal when clicking outside
-        document.getElementById('modal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
+        function openLiveChat() { showModal("Live Chat", "<p class='text-center py-10'>💬 Fitur ini sedang dalam pengembangan</p>"); }
+        function openModelCriteria() { showModal("Kriteria Model", "<p class='py-6'>Ukuran, bentuk tubuh, warna kulit, dan pose favorit akan segera tersedia.</p>"); }
+        function openFabricTypes() { showModal("Jenis Kain Premium", "<p class='py-6'>Satin • Cotton • Linen • Chiffon • dan lain-lain</p>"); }
+        function openLogin() { showModal("Masuk", "<p class='py-8 text-center'>Fitur login sedang dikembangkan</p>"); }
+        function openRegister() { showModal("Daftar Gratis", "<p class='py-8 text-center'>Selamat datang di MY Dreams! 🌸</p>"); }
 
         // Inisialisasi
-        window.onload = function() {
-            createPetals();
-            console.log("%c🌸 MY Dreams - Versi Cantik dengan Modal & Petal sudah aktif!", "color:#ec4899; font-size:16px");
+        window.onload = () => {
+            createSakuraPetals();
+            console.log("%c🌸 MY Dreams dengan kelopak sakura asli sudah aktif!", "color:#ec4899; font-size:16px");
         };
     </script>
 </body>
