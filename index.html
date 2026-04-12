@@ -13,106 +13,72 @@
         body { font-family: 'Poppins', sans-serif; }
         .logo-font { font-family: 'Playfair Display', serif; }
 
-        .dashboard-bg {
-            background: linear-gradient(135deg, #f8f1e9 0%, #e0f2f1 100%);
+        .hero {
+            position: relative;
+            height: 100vh;
+            min-height: 650px;
+            overflow: hidden;
         }
 
-        .card-hover {
-            transition: all 0.3s ease;
+        .slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: kenBurns 22s ease infinite alternate;
         }
-        .card-hover:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+        .slide.active { opacity: 1; }
+
+        @keyframes kenBurns {
+            0%   { transform: scale(1.0); }
+            100% { transform: scale(1.12); }
+        }
+
+        .overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,105,180,0.78), rgba(180,120,220,0.72), rgba(100,180,255,0.68));
+            z-index: 2;
+        }
+
+        .modal-close {
+            transition: all 0.2s ease;
+        }
+        .modal-close:hover {
+            transform: rotate(90deg);
+            color: #e11d48;
         }
     </style>
 </head>
 <body class="bg-pink-50 overflow-x-hidden">
 
     <!-- Navbar -->
-    <nav class="bg-white/95 backdrop-blur-2xl border-b border-teal-100 sticky top-0 z-50 shadow-sm">
+    <nav class="bg-white/95 backdrop-blur-2xl border-b border-pink-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <span class="text-4xl">🌸</span>
-                <h1 class="logo-font text-3xl font-bold bg-gradient-to-r from-teal-500 to-pink-500 bg-clip-text text-transparent">MY Dreams</h1>
+                <span class="text-4xl drop-shadow-md">🌸</span>
+                <h1 class="logo-font text-3xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-violet-600 bg-clip-text text-transparent">MY Dreams</h1>
             </div>
             
             <div class="hidden md:flex items-center gap-9 font-medium text-gray-700">
-                <a href="#" onclick="goToPage('home')" class="hover:text-teal-600 transition-colors">Beranda</a>
-                <a href="#" onclick="showComingSoon('AI Design')" class="hover:text-teal-600 transition-colors">AI Design</a>
-                <a href="#" onclick="showComingSoon('Live Chat')" class="hover:text-teal-600 transition-colors">Live Chat</a>
-                <a href="#" onclick="showDashboard()" class="hover:text-teal-600 transition-colors">Koleksi Saya</a>
+                <a href="#" onclick="goToPage('home')" class="hover:text-pink-600 transition-colors">Beranda</a>
+                <a href="#" onclick="showComingSoon('AI Design')" class="hover:text-pink-600 transition-colors">AI Design</a>
+                <a href="#" onclick="showComingSoon('Live Chat')" class="hover:text-pink-600 transition-colors">Live Chat</a>
+                <a href="#" onclick="showComingSoon('Koleksi')" class="hover:text-pink-600 transition-colors">Koleksi Saya</a>
             </div>
 
-            <div class="flex items-center gap-4" id="authButtons">
-                <!-- Di-update oleh JS -->
+            <div class="flex gap-4" id="authButtons">
+                <!-- Akan di-update otomatis oleh JS -->
             </div>
         </div>
     </nav>
 
-    <!-- Dashboard -->
-    <section id="dashboard" class="dashboard-bg min-h-screen py-12 hidden">
-        <div class="max-w-6xl mx-auto px-6">
-            <!-- Header Dashboard -->
-            <div class="flex justify-between items-center mb-10">
-                <div>
-                    <h1 class="text-4xl font-semibold text-gray-800">Halo, <span id="userName" class="text-teal-600"></span> 👋</h1>
-                    <p class="text-gray-600 mt-1">Selamat datang kembali di MY Dreams</p>
-                </div>
-                <button onclick="logout()" 
-                        class="flex items-center gap-2 px-6 py-3 border border-teal-200 text-teal-700 rounded-3xl hover:bg-teal-50 transition">
-                    <i class="fas fa-sign-out-alt"></i>
-                    Keluar
-                </button>
-            </div>
-
-            <!-- Quick Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-                <div onclick="showComingSoon('AI Design')" 
-                     class="bg-white rounded-3xl p-8 card-hover cursor-pointer border border-teal-100">
-                    <div class="text-6xl mb-6">✨</div>
-                    <h3 class="text-2xl font-semibold text-teal-700 mb-2">Mulai Desain Baru</h3>
-                    <p class="text-gray-600">Buat baju impianmu dengan AI canggih</p>
-                </div>
-
-                <div onclick="showComingSoon('Koleksi Saya')" 
-                     class="bg-white rounded-3xl p-8 card-hover cursor-pointer border border-teal-100">
-                    <div class="text-6xl mb-6">👗</div>
-                    <h3 class="text-2xl font-semibold text-teal-700 mb-2">Koleksi Saya</h3>
-                    <p class="text-gray-600">Lihat semua desain yang pernah kamu buat</p>
-                </div>
-
-                <div onclick="showComingSoon('Favorit')" 
-                     class="bg-white rounded-3xl p-8 card-hover cursor-pointer border border-teal-100">
-                    <div class="text-6xl mb-6">❤️</div>
-                    <h3 class="text-2xl font-semibold text-teal-700 mb-2">Favorit</h3>
-                    <p class="text-gray-600">Desain yang kamu simpan</p>
-                </div>
-            </div>
-
-            <!-- Riwayat Desain -->
-            <div class="bg-white rounded-3xl p-8 shadow-sm">
-                <h3 class="text-2xl font-semibold text-gray-800 mb-6">Riwayat Desain Terbaru</h3>
-                <div class="text-center py-20 text-gray-400">
-                    <div class="text-7xl mb-6">🪡</div>
-                    <p class="text-lg">Belum ada desain yang dibuat</p>
-                    <p class="text-sm mt-2">Mulai buat desain pertamamu sekarang</p>
-                    <button onclick="showComingSoon('AI Design')" 
-                            class="mt-8 px-8 py-4 bg-gradient-to-r from-teal-500 to-pink-500 text-white rounded-3xl font-medium hover:brightness-110 transition">
-                        Buat Desain Pertama
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Hero (untuk user belum login) -->
+    <!-- Hero Section (Hanya muncul jika belum login) -->
     <section id="hero" class="hero flex items-center text-white">
-        <div class="slideshow" id="slideshow">
-            <div class="slide active" style="background-image: url('https://picsum.photos/id/1015/2000/1200')"></div>
-            <div class="slide" style="background-image: url('https://picsum.photos/id/1016/2000/1200')"></div>
-            <div class="slide" style="background-image: url('https://picsum.photos/id/133/2000/1200')"></div>
-            <div class="slide" style="background-image: url('https://picsum.photos/id/201/2000/1200')"></div>
-        </div>
+        <!-- ... (sama seperti sebelumnya) ... -->
         <div class="overlay"></div>
         <div class="content max-w-5xl mx-auto px-6 text-center z-10">
             <div class="inline-flex items-center gap-3 bg-white/20 backdrop-blur-2xl px-8 py-3 rounded-3xl mb-8 text-base font-medium border border-white/30">
@@ -126,10 +92,58 @@
                 Dari pegunungan hingga pantai, dari taman hingga malam kota.
             </p>
             <button onclick="showComingSoon('AI Design')" 
-                    class="group px-12 py-6 bg-white text-teal-600 font-semibold rounded-3xl text-xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all flex items-center gap-4 mx-auto">
+                    class="group px-12 py-6 bg-white text-pink-600 font-semibold rounded-3xl text-xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all flex items-center gap-4 mx-auto">
                 <i class="fas fa-magic"></i>
                 Mulai Desain dengan AI
             </button>
+        </div>
+    </section>
+
+    <!-- Dashboard Section (Hidden by default) -->
+    <section id="dashboard" class="hidden min-h-screen bg-gradient-to-br from-pink-50 to-purple-50 py-12">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="flex justify-between items-center mb-10">
+                <div>
+                    <h1 class="text-4xl font-semibold text-pink-700">Halo, <span id="userEmail" class="text-pink-600"></span>! 👋</h1>
+                    <p class="text-gray-600 mt-2">Selamat datang kembali di MY Dreams</p>
+                </div>
+                <button onclick="logout()" 
+                        class="px-6 py-3 border border-pink-300 text-pink-600 rounded-3xl hover:bg-pink-50 transition flex items-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i> Keluar
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Card 1: Mulai Desain -->
+                <div onclick="showComingSoon('AI Design')" 
+                     class="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl transition cursor-pointer">
+                    <div class="text-5xl mb-6">✨</div>
+                    <h3 class="text-2xl font-semibold text-pink-600 mb-2">Mulai Desain Baru</h3>
+                    <p class="text-gray-600">Buat baju impianmu dengan AI</p>
+                </div>
+
+                <!-- Card 2: Koleksi Saya -->
+                <div onclick="showComingSoon('Koleksi Saya')" 
+                     class="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl transition cursor-pointer">
+                    <div class="text-5xl mb-6">👗</div>
+                    <h3 class="text-2xl font-semibold text-pink-600 mb-2">Koleksi Saya</h3>
+                    <p class="text-gray-600">Lihat semua desain yang pernah kamu buat</p>
+                </div>
+
+                <!-- Card 3: Favorit -->
+                <div onclick="showComingSoon('Favorit')" 
+                     class="bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl transition cursor-pointer">
+                    <div class="text-5xl mb-6">❤️</div>
+                    <h3 class="text-2xl font-semibold text-pink-600 mb-2">Favorit</h3>
+                    <p class="text-gray-600">Desain yang kamu simpan</p>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-white rounded-3xl p-8 shadow-sm">
+                <h3 class="text-xl font-semibold text-pink-700 mb-6">Riwayat Desain Terbaru</h3>
+                <p class="text-gray-500 text-center py-12">Belum ada desain yang dibuat.<br>
+                <span class="text-pink-600 cursor-pointer hover:underline" onclick="showComingSoon('AI Design')">Mulai buat desain pertamamu sekarang</span></p>
+            </div>
         </div>
     </section>
 
@@ -141,27 +155,92 @@
     <script>
         let currentUser = null;
 
-        // Login & Register (sama seperti sebelumnya, sedikit disingkat)
-        function openLogin() { /* ... sama seperti kode sebelumnya ... */ }
-        function openRegister() { /* ... sama seperti kode sebelumnya ... */ }
-        function handleRegister() { /* ... */ }
-        function handleLogin() { 
-            // ... (logika login)
+        // ==================== NAVIGATION ====================
+        function goToPage(page) {
+            document.getElementById('hero').classList.add('hidden');
+            document.getElementById('dashboard').classList.add('hidden');
+
+            if (page === 'home') {
+                document.getElementById('hero').classList.remove('hidden');
+            }
+        }
+
+        // ==================== AUTH SYSTEM ====================
+        function openLogin() {
+            const html = `
+                <div class="p-8 relative">
+                    <button onclick="closeModal()" class="modal-close absolute top-5 right-5 text-3xl text-gray-400 hover:text-pink-600">×</button>
+                    <div class="text-center mb-8">
+                        <span class="text-4xl">🌸</span>
+                        <h2 class="text-2xl font-semibold text-pink-600 mt-4">Selamat Datang Kembali</h2>
+                    </div>
+                    <div class="space-y-5">
+                        <input id="loginEmail" type="email" placeholder="Email atau No. HP" class="w-full px-5 py-4 border border-pink-200 rounded-2xl focus:outline-none focus:border-pink-400">
+                        <input id="loginPassword" type="password" placeholder="Kata Sandi" class="w-full px-5 py-4 border border-pink-200 rounded-2xl focus:outline-none focus:border-pink-400">
+                        <button onclick="handleLogin()" class="w-full py-4 bg-pink-600 text-white rounded-3xl font-medium hover:bg-pink-700">Masuk</button>
+                        <p class="text-center text-sm text-gray-500">Belum punya akun? <span onclick="switchToRegister()" class="text-pink-600 cursor-pointer hover:underline">Daftar Gratis</span></p>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function openRegister() {
+            const html = `
+                <div class="p-8 relative">
+                    <button onclick="closeModal()" class="modal-close absolute top-5 right-5 text-3xl text-gray-400 hover:text-pink-600">×</button>
+                    <div class="text-center mb-8">
+                        <span class="text-4xl">🌸</span>
+                        <h2 class="text-2xl font-semibold text-pink-600 mt-4">Buat Akun Baru</h2>
+                    </div>
+                    <div class="space-y-5">
+                        <input id="regEmail" type="email" placeholder="Email atau No. HP" class="w-full px-5 py-4 border border-pink-200 rounded-2xl focus:outline-none focus:border-pink-400">
+                        <input id="regPassword" type="password" placeholder="Kata Sandi" class="w-full px-5 py-4 border border-pink-200 rounded-2xl focus:outline-none focus:border-pink-400">
+                        <input id="regConfirmPassword" type="password" placeholder="Konfirmasi Kata Sandi" class="w-full px-5 py-4 border border-pink-200 rounded-2xl focus:outline-none focus:border-pink-400">
+                        <button onclick="handleRegister()" class="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl font-medium hover:brightness-110">Daftar Gratis</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function handleRegister() {
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirmPassword').value;
+
+            if (!email || !password) return alert("Email dan Password wajib diisi");
+            if (password !== confirm) return alert("Konfirmasi password tidak cocok");
+            if (password.length < 6) return alert("Password minimal 6 karakter");
+
+            localStorage.setItem('myDreamsUser', JSON.stringify({ email, password }));
+            alert("🎉 Pendaftaran berhasil!");
+            closeModal();
+            setTimeout(openLogin, 500);
+        }
+
+        function handleLogin() {
             const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
             const savedUser = JSON.parse(localStorage.getItem('myDreamsUser'));
-            if (savedUser && savedUser.email === email) {
+
+            if (savedUser && savedUser.email === email && savedUser.password === password) {
                 currentUser = savedUser;
+                alert(`✅ Login berhasil!`);
                 closeModal();
                 showDashboard();
             } else {
-                alert("Email atau password salah");
+                alert("❌ Email atau password salah");
             }
         }
 
         function showDashboard() {
             document.getElementById('hero').classList.add('hidden');
             document.getElementById('dashboard').classList.remove('hidden');
-            document.getElementById('userName').textContent = currentUser.email.split('@')[0]; // tampilkan nama saja
+            document.getElementById('userEmail').textContent = currentUser.email;
+            updateAuthButtons();
         }
 
         function logout() {
@@ -177,17 +256,36 @@
         function updateAuthButtons() {
             const div = document.getElementById('authButtons');
             if (currentUser) {
-                div.innerHTML = `<button onclick="logout()" class="px-6 py-3 border border-teal-200 text-teal-700 rounded-3xl hover:bg-teal-50">Keluar</button>`;
+                div.innerHTML = `
+                    <button onclick="logout()" class="px-6 py-3 border border-pink-300 text-pink-600 rounded-3xl hover:bg-pink-50 transition flex items-center gap-2">
+                        <i class="fas fa-sign-out-alt"></i> Keluar
+                    </button>
+                `;
             } else {
                 div.innerHTML = `
-                    <button onclick="openLogin()" class="px-7 py-3 border border-teal-200 rounded-3xl text-teal-700 hover:bg-teal-50">Masuk</button>
-                    <button onclick="openRegister()" class="px-7 py-3 bg-gradient-to-r from-teal-500 to-pink-500 text-white rounded-3xl">Daftar Gratis</button>
+                    <button onclick="openLogin()" class="px-7 py-3 border border-pink-300 rounded-3xl text-pink-600 hover:bg-pink-50 transition-all font-medium">Masuk</button>
+                    <button onclick="openRegister()" class="px-7 py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl hover:scale-105 transition-all font-medium shadow-lg">Daftar Gratis</button>
                 `;
             }
         }
 
+        function switchToRegister() {
+            closeModal();
+            setTimeout(openRegister, 400);
+        }
+
         function showComingSoon(feature) {
-            alert(`Fitur "${feature}" sedang dalam pengembangan 🌸`);
+            const html = `
+                <div class="p-10 relative text-center">
+                    <button onclick="closeModal()" class="modal-close absolute top-5 right-5 text-3xl text-gray-400 hover:text-pink-600">×</button>
+                    <div class="text-6xl mb-6">🌸</div>
+                    <h2 class="text-2xl font-semibold text-pink-600 mb-3">${feature}</h2>
+                    <p class="text-gray-600">Fitur ini sedang dalam pengembangan.<br>Kami akan segera menghadirkan fitur ini untuk kamu.</p>
+                    <button onclick="closeModal()" class="mt-8 px-10 py-4 bg-pink-600 text-white rounded-3xl hover:bg-pink-700">Mengerti</button>
+                </div>
+            `;
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('modal').classList.remove('hidden');
         }
 
         function closeModal() {
@@ -196,10 +294,12 @@
 
         // Inisialisasi
         window.onload = () => {
-            const saved = JSON.parse(localStorage.getItem('myDreamsUser'));
-            if (saved) {
-                currentUser = saved;
+            const savedUser = JSON.parse(localStorage.getItem('myDreamsUser'));
+            if (savedUser) {
+                currentUser = savedUser;
                 showDashboard();
+            } else {
+                document.getElementById('hero').classList.remove('hidden');
             }
             updateAuthButtons();
         };
