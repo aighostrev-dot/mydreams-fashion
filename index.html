@@ -11,11 +11,14 @@
         
         body { font-family: 'Poppins', sans-serif; }
         .logo-font { font-family: 'Playfair Display', serif; }
-        
+
         .hero-bg {
-            background: linear-gradient(135deg, rgba(255,182,193,0.85), rgba(216,191,216,0.85), rgba(173,216,230,0.85)),
-                        url('https://picsum.photos/id/1015/2000/1200') center/cover fixed;
-            animation: flowerFloat 30s ease infinite;
+            background: linear-gradient(135deg, 
+                rgba(255, 182, 193, 0.85), 
+                rgba(216, 191, 216, 0.85), 
+                rgba(173, 216, 230, 0.85)),
+                url('https://picsum.photos/id/1015/2000/1200') center/cover fixed;
+            animation: flowerFloat 35s ease infinite;
         }
         @keyframes flowerFloat {
             0% { background-position: 0% 50%; }
@@ -24,66 +27,82 @@
         }
     </style>
 </head>
-<body class="bg-pink-50">
+<body class="bg-pink-50 text-gray-800">
 
     <!-- Navbar -->
-    <nav class="bg-white/90 backdrop-blur-lg border-b border-pink-200 sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+    <nav class="bg-white/95 backdrop-blur-lg border-b border-pink-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <span class="text-4xl">🌸</span>
                 <h1 class="logo-font text-3xl font-bold bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">MY Dreams</h1>
             </div>
-            <div class="hidden md:flex gap-8 text-base font-medium">
-                <a href="#" class="hover:text-pink-600 transition">Beranda</a>
-                <a href="#" onclick="showAIDesign()" class="hover:text-pink-600 transition">AI Design</a>
-                <a href="#" onclick="showLiveChat()" class="hover:text-pink-600 transition">Live Chat</a>
-                <a href="#" onclick="showModel()" class="hover:text-pink-600 transition">Kriteria Model</a>
-                <a href="#" onclick="showFabric()" class="hover:text-pink-600 transition">Jenis Kain</a>
+            
+            <div class="hidden md:flex items-center gap-8 font-medium">
+                <a href="#" class="hover:text-pink-600 transition-colors">Beranda</a>
+                <a href="#" onclick="openAIDesign()" class="hover:text-pink-600 transition-colors">AI Design</a>
+                <a href="#" onclick="openLiveChat()" class="hover:text-pink-600 transition-colors">Live Chat</a>
+                <a href="#" onclick="openModelCriteria()" class="hover:text-pink-600 transition-colors">Kriteria Model</a>
+                <a href="#" onclick="openFabricTypes()" class="hover:text-pink-600 transition-colors">Jenis Kain</a>
             </div>
-            <div class="flex gap-3">
-                <button onclick="showLogin()" class="px-6 py-2 border border-pink-300 rounded-3xl text-pink-600 hover:bg-pink-50">Masuk</button>
-                <button onclick="showRegister()" class="px-6 py-2 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl">Daftar Gratis</button>
+
+            <div class="flex items-center gap-4">
+                <button onclick="openLogin()" 
+                        class="px-6 py-2.5 border border-pink-300 rounded-3xl text-pink-600 hover:bg-pink-50 transition">
+                    Masuk
+                </button>
+                <button onclick="openRegister()" 
+                        class="px-6 py-2.5 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl font-medium">
+                    Daftar Gratis
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section class="hero-bg min-h-screen flex items-center text-white relative overflow-hidden">
-        <div class="max-w-5xl mx-auto px-6 text-center z-10">
-            <p class="inline-block bg-white/20 backdrop-blur-md px-5 py-2 rounded-full text-sm mb-6">🌸 Koleksi Terbaru 2026</p>
+    <!-- Hero -->
+    <section class="hero-bg min-h-screen flex items-center relative">
+        <div class="max-w-5xl mx-auto px-6 text-center text-white">
+            <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-6 py-2 rounded-full mb-6">
+                🌸 Koleksi Terbaru 2026
+            </div>
             <h1 class="text-6xl md:text-7xl font-bold logo-font leading-none mb-6">Wujudkan<br>Impian Baju Mu</h1>
-            <p class="text-xl max-w-xl mx-auto mb-10">Desain baju custom dengan AI canggih yang mencari referensi otomatis dan membantu kamu dari nol sampai jadi.</p>
+            <p class="text-xl max-w-2xl mx-auto mb-10">Desain baju custom dengan AI canggih yang mencari referensi otomatis dan membantu kamu dari nol sampai jadi.</p>
             
-            <button onclick="showAIDesign()" 
-                    class="px-10 py-4 bg-white text-pink-600 font-semibold rounded-3xl text-lg shadow-2xl hover:scale-105 transition flex items-center gap-3 mx-auto">
+            <button onclick="openAIDesign()" 
+                    class="px-10 py-5 bg-white text-pink-600 font-semibold rounded-3xl text-lg shadow-2xl hover:scale-105 transition flex items-center gap-3 mx-auto">
                 <i class="fas fa-magic"></i>
                 Mulai Desain dengan AI
             </button>
         </div>
     </section>
 
-    <!-- Simple Modals -->
     <script>
-        function showAIDesign() {
-            alert("🎉 AI Design Studio dibuka!\n\nFitur lengkap sedang dalam pengembangan.\nKamu bisa tulis deskripsi baju di sini nanti.");
-        }
-        function showLiveChat() {
-            alert("💬 Live Chat dengan desainer\n\nFitur ini akan segera tersedia.");
-        }
-        function showModel() {
-            alert("👤 Kriteria Model\n\nPilih ukuran, bentuk tubuh, dan preferensi model kamu.");
-        }
-        function showFabric() {
-            alert("🧵 Jenis Kain Premium\n\nSatin, Cotton, Linen, Chiffon, dll.");
-        }
-        function showLogin() {
-            alert("🔑 Halaman Login\n\nFitur login sedang dikembangkan.");
-        }
-        function showRegister() {
-            alert("✨ Daftar Gratis\n\nSelamat datang di MY Dreams!");
+        function openAIDesign() {
+            const msg = "✨ AI Design Studio\n\nFitur ini sedang dalam pengembangan lanjutan.\n\nKamu bisa mengetik deskripsi baju impianmu di sini nanti.";
+            alert(msg);
         }
 
-        console.log("%c✅ MY Dreams berhasil live di Vercel!", "color:#ec4899; font-size:18px; font-weight:bold");
+        function openLiveChat() {
+            alert("💬 Live Chat dengan Desainer\n\nFitur chat langsung sedang dikembangkan.");
+        }
+
+        function openModelCriteria() {
+            alert("👤 Kriteria Model\n\n• Ukuran XS - 5XL\n• Bentuk tubuh\n• Warna kulit & preferensi pose");
+        }
+
+        function openFabricTypes() {
+            alert("🧵 Jenis Kain Premium\n\n• Satin Flowy\n• Cotton Organic\n• Linen Natural\n• Chiffon Dreamy");
+        }
+
+        function openLogin() {
+            alert("🔑 Halaman Login\n\nFitur login & register sedang dalam pengembangan.\n\nKamu bisa daftar melalui tombol Daftar Gratis.");
+        }
+
+        function openRegister() {
+            alert("🎉 Selamat datang di MY Dreams!\n\nAkun berhasil dibuat (simulasi).\n\nSekarang kamu bisa mulai desain baju impianmu.");
+        }
+
+        // Pesan selamat datang di console
+        console.log("%c🌸 MY Dreams berhasil di-deploy dan siap digunakan!", "color:#ec4899; font-size:16px; font-weight:bold");
     </script>
 </body>
 </html>
