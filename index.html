@@ -13,21 +13,26 @@
         .logo-font { font-family: 'Playfair Display', serif; }
 
         .hero-bg {
-            background: linear-gradient(135deg, 
-                rgba(255, 182, 193, 0.85), 
-                rgba(216, 191, 216, 0.85), 
-                rgba(173, 216, 230, 0.85)),
-                url('https://picsum.photos/id/1015/2000/1200') center/cover fixed;
-            animation: flowerFloat 35s ease infinite;
+            background: linear-gradient(135deg, rgba(255,182,193,0.85), rgba(216,191,216,0.85), rgba(173,216,230,0.85)),
+                        url('https://picsum.photos/id/1015/2000/1200') center/cover fixed;
+            animation: flowerFloat 40s ease infinite;
         }
         @keyframes flowerFloat {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
+
+        .modal {
+            animation: modalPop 0.3s ease forwards;
+        }
+        @keyframes modalPop {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
     </style>
 </head>
-<body class="bg-pink-50 text-gray-800">
+<body class="bg-pink-50">
 
     <!-- Navbar -->
     <nav class="bg-white/95 backdrop-blur-lg border-b border-pink-200 sticky top-0 z-50">
@@ -38,29 +43,23 @@
             </div>
             
             <div class="hidden md:flex items-center gap-8 font-medium">
-                <a href="#" class="hover:text-pink-600 transition-colors">Beranda</a>
-                <a href="#" onclick="openAIDesign()" class="hover:text-pink-600 transition-colors">AI Design</a>
-                <a href="#" onclick="openLiveChat()" class="hover:text-pink-600 transition-colors">Live Chat</a>
-                <a href="#" onclick="openModelCriteria()" class="hover:text-pink-600 transition-colors">Kriteria Model</a>
-                <a href="#" onclick="openFabricTypes()" class="hover:text-pink-600 transition-colors">Jenis Kain</a>
+                <a href="#" class="hover:text-pink-600">Beranda</a>
+                <a href="#" onclick="openAIDesign()" class="hover:text-pink-600">AI Design</a>
+                <a href="#" onclick="openLiveChat()" class="hover:text-pink-600">Live Chat</a>
+                <a href="#" onclick="openModelCriteria()" class="hover:text-pink-600">Kriteria Model</a>
+                <a href="#" onclick="openFabricTypes()" class="hover:text-pink-600">Jenis Kain</a>
             </div>
 
-            <div class="flex items-center gap-4">
-                <button onclick="openLogin()" 
-                        class="px-6 py-2.5 border border-pink-300 rounded-3xl text-pink-600 hover:bg-pink-50 transition">
-                    Masuk
-                </button>
-                <button onclick="openRegister()" 
-                        class="px-6 py-2.5 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl font-medium">
-                    Daftar Gratis
-                </button>
+            <div class="flex gap-4">
+                <button onclick="openLogin()" class="px-6 py-2.5 border border-pink-300 rounded-3xl text-pink-600 hover:bg-pink-50">Masuk</button>
+                <button onclick="openRegister()" class="px-6 py-2.5 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl">Daftar Gratis</button>
             </div>
         </div>
     </nav>
 
     <!-- Hero -->
-    <section class="hero-bg min-h-screen flex items-center relative">
-        <div class="max-w-5xl mx-auto px-6 text-center text-white">
+    <section class="hero-bg min-h-screen flex items-center text-white relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-6 text-center">
             <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md px-6 py-2 rounded-full mb-6">
                 🌸 Koleksi Terbaru 2026
             </div>
@@ -75,34 +74,116 @@
         </div>
     </section>
 
+    <!-- Modal Template -->
+    <div id="modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100]">
+        <div id="modalContent" class="bg-white rounded-3xl max-w-lg w-full mx-4 overflow-hidden modal">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 id="modalTitle" class="text-2xl font-semibold text-pink-600"></h2>
+                    <button onclick="closeModal()" class="text-3xl text-gray-400 hover:text-gray-600">×</button>
+                </div>
+                <div id="modalBody" class="text-gray-600 leading-relaxed"></div>
+            </div>
+            <div class="border-t p-4 flex justify-end">
+                <button onclick="closeModal()" 
+                        class="px-8 py-3 bg-pink-600 text-white rounded-3xl hover:bg-pink-700 transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
     <script>
+        function showModal(title, content) {
+            document.getElementById('modalTitle').textContent = title;
+            document.getElementById('modalBody').innerHTML = content;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+
         function openAIDesign() {
-            const msg = "✨ AI Design Studio\n\nFitur ini sedang dalam pengembangan lanjutan.\n\nKamu bisa mengetik deskripsi baju impianmu di sini nanti.";
-            alert(msg);
+            const content = `
+                <p class="mb-4">✨ <strong>AI Design Studio</strong></p>
+                <p class="mb-6">Ketik deskripsi baju impianmu, AI akan membantu mencari referensi dan menghasilkan desain.</p>
+                <textarea id="aiPrompt" rows="4" class="w-full p-4 border border-pink-200 rounded-2xl focus:border-pink-400 outline-none" 
+                    placeholder="Contoh: baju pesta wanita motif bunga sakura, warna pastel, lengan puff..."></textarea>
+                <button onclick="generateAI()" 
+                        class="mt-4 w-full py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl font-medium">
+                    Generate Desain dengan AI
+                </button>
+            `;
+            showModal("AI Design Studio", content);
+        }
+
+        function generateAI() {
+            const prompt = document.getElementById('aiPrompt').value || "baju cantik dengan motif bunga";
+            closeModal();
+            setTimeout(() => {
+                showModal("Hasil AI Design", `
+                    <p class="text-center text-xl mb-4">🎉 Desain berhasil dibuat!</p>
+                    <div class="text-8xl text-center mb-4">👗</div>
+                    <p class="text-center text-pink-600">"${prompt}"</p>
+                    <p class="text-xs text-gray-500 text-center mt-6">Fitur lengkap (preview gambar & edit) sedang dikembangkan.</p>
+                `);
+            }, 400);
         }
 
         function openLiveChat() {
-            alert("💬 Live Chat dengan Desainer\n\nFitur chat langsung sedang dikembangkan.");
+            showModal("Live Chat", `
+                <p class="mb-4">💬 <strong>Chat langsung dengan desainer profesional</strong></p>
+                <p class="text-sm">Fitur ini sedang dalam tahap pengembangan.<br>Kamu bisa menghubungi kami melalui WhatsApp nanti.</p>
+            `);
         }
 
         function openModelCriteria() {
-            alert("👤 Kriteria Model\n\n• Ukuran XS - 5XL\n• Bentuk tubuh\n• Warna kulit & preferensi pose");
+            showModal("Kriteria Model", `
+                <ul class="list-disc pl-5 space-y-2">
+                    <li>Ukuran: XS hingga 5XL</li>
+                    <li>Bentuk tubuh (Hourglass, Pear, Rectangle, dll)</li>
+                    <li>Tinggi badan & warna kulit</li>
+                    <li>Pose & gaya favorit</li>
+                </ul>
+                <p class="mt-4 text-sm text-pink-600">Kita akan tambahkan virtual fitting di versi selanjutnya.</p>
+            `);
         }
 
         function openFabricTypes() {
-            alert("🧵 Jenis Kain Premium\n\n• Satin Flowy\n• Cotton Organic\n• Linen Natural\n• Chiffon Dreamy");
+            showModal("Jenis Kain Premium", `
+                <ul class="grid grid-cols-2 gap-3 text-sm">
+                    <li>🌸 Satin Flowy</li>
+                    <li>☁️ Cotton Organic</li>
+                    <li>🌿 Linen Natural</li>
+                    <li>✨ Chiffon Dreamy</li>
+                </ul>
+                <p class="mt-4 text-xs text-gray-500">Semua kain ramah lingkungan & impor langsung.</p>
+            `);
         }
 
         function openLogin() {
-            alert("🔑 Halaman Login\n\nFitur login & register sedang dalam pengembangan.\n\nKamu bisa daftar melalui tombol Daftar Gratis.");
+            showModal("Masuk ke MY Dreams", `
+                <p class="mb-6">Silakan masuk dengan akun kamu.</p>
+                <input type="text" placeholder="Email atau Nomor HP" class="w-full p-4 border rounded-2xl mb-4">
+                <input type="password" placeholder="Password" class="w-full p-4 border rounded-2xl mb-6">
+                <button onclick="closeModal()" class="w-full py-4 bg-pink-600 text-white rounded-3xl">Masuk</button>
+            `);
         }
 
         function openRegister() {
-            alert("🎉 Selamat datang di MY Dreams!\n\nAkun berhasil dibuat (simulasi).\n\nSekarang kamu bisa mulai desain baju impianmu.");
+            showModal("Daftar Akun Baru", `
+                <p class="mb-6">Buat akun gratis dan mulai desain baju impianmu.</p>
+                <input type="text" placeholder="Nama Lengkap" class="w-full p-4 border rounded-2xl mb-3">
+                <input type="email" placeholder="Email" class="w-full p-4 border rounded-2xl mb-6">
+                <button onclick="closeModal()" class="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl">Daftar Sekarang</button>
+            `);
         }
 
-        // Pesan selamat datang di console
-        console.log("%c🌸 MY Dreams berhasil di-deploy dan siap digunakan!", "color:#ec4899; font-size:16px; font-weight:bold");
+        // Close modal when clicking outside
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
     </script>
 </body>
 </html>
