@@ -3,279 +3,253 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MY Dreams - Wujudkan Impian Baju Mu</title>
+    <title>MY Dreams</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;500;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap');
         
-        body { font-family: 'Poppins', sans-serif; }
+        body { font-family: 'Inter', sans-serif; }
         .logo-font { font-family: 'Playfair Display', serif; }
 
-        .hero {
-            position: relative;
-            height: 100vh;
-            min-height: 650px;
-            overflow: hidden;
-        }
-
-        .slide {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1.6s cubic-bezier(0.4, 0, 0.2, 1);
-            animation: kenBurns 22s ease infinite alternate;
-        }
-
-        .slide.active { opacity: 1; }
-
-        @keyframes kenBurns {
-            0%   { transform: scale(1.0); }
-            100% { transform: scale(1.12); }
-        }
-
-        .overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,105,180,0.78), rgba(180,120,220,0.72), rgba(100,180,255,0.68));
-            z-index: 2;
-        }
-
-        .modal-close {
-            transition: all 0.2s ease;
-        }
-        .modal-close:hover {
-            transform: rotate(90deg);
-            color: #e11d48;
+        .hero-bg {
+            background: linear-gradient(135deg, #f5f0e8, #e8d9c2);
+            min-height: 100vh;
         }
     </style>
 </head>
-<body class="bg-pink-50 overflow-x-hidden">
+<body class="bg-[#f5f0e8]">
 
-    <!-- Navbar -->
-    <nav class="bg-white/95 backdrop-blur-2xl border-b border-pink-200 sticky top-0 z-50 shadow-sm">
-        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <span class="text-4xl drop-shadow-md">🌸</span>
-                <h1 class="logo-font text-3xl font-bold bg-gradient-to-r from-pink-500 via-purple-500 to-violet-600 bg-clip-text text-transparent">MY Dreams</h1>
-            </div>
-            
-            <div class="hidden md:flex items-center gap-9 font-medium text-gray-700">
-                <a href="#" class="hover:text-pink-600 transition-colors">Beranda</a>
-                <a href="#" onclick="showComingSoon('AI Design')" class="hover:text-pink-600 transition-colors">AI Design</a>
-                <a href="#" onclick="showComingSoon('Live Chat')" class="hover:text-pink-600 transition-colors">Live Chat</a>
-                <a href="#" onclick="showComingSoon('Kriteria Model')" class="hover:text-pink-600 transition-colors">Kriteria Model</a>
-                <a href="#" onclick="showComingSoon('Jenis Kain')" class="hover:text-pink-600 transition-colors">Jenis Kain</a>
-            </div>
-
-            <div class="flex gap-4" id="authButtons">
-                <button onclick="openLogin()" 
-                        class="px-7 py-3 border border-pink-300 rounded-3xl text-pink-600 hover:bg-pink-50 transition-all font-medium">Masuk</button>
-                <button onclick="openRegister()" 
-                        class="px-7 py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl hover:scale-105 transition-all font-medium shadow-lg">Daftar Gratis</button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="hero" class="hero flex items-center text-white">
-        <div class="slideshow" id="slideshow">
-            <div class="slide active" style="background-image: url('https://picsum.photos/id/1015/2000/1200')"></div>
-            <div class="slide" style="background-image: url('https://picsum.photos/id/1016/2000/1200')"></div>
-            <div class="slide" style="background-image: url('https://picsum.photos/id/133/2000/1200')"></div>
-            <div class="slide" style="background-image: url('https://picsum.photos/id/201/2000/1200')"></div>
-        </div>
-
-        <div class="overlay"></div>
-
-        <div class="content max-w-5xl mx-auto px-6 text-center z-10">
-            <div class="inline-flex items-center gap-3 bg-white/20 backdrop-blur-2xl px-8 py-3 rounded-3xl mb-8 text-base font-medium border border-white/30">
-                🌸 Koleksi Terbaru 2026
-            </div>
-            <h1 class="text-5xl md:text-7xl font-bold logo-font leading-none mb-6 tracking-tighter">
-                Wujudkan<br>Impian Baju Mu
+    <!-- LANDING PAGE -->
+    <div id="landingPage" class="hero-bg flex items-center justify-center min-h-screen">
+        <div class="text-center px-6">
+            <h1 class="logo-font text-7xl md:text-8xl font-bold tracking-tight text-[#8d6e63] mb-12">
+                MY DREAMS
             </h1>
-            <p class="text-xl max-w-2xl mx-auto mb-12 text-white/90">
-                Desain baju custom dengan AI canggih.<br>
-                Dari pegunungan hingga pantai, dari taman hingga malam kota.
-            </p>
-
-            <button onclick="showComingSoon('AI Design')" 
-                    class="group px-12 py-6 bg-white text-pink-600 font-semibold rounded-3xl text-xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all flex items-center gap-4 mx-auto">
-                <i class="fas fa-magic"></i>
-                Mulai Desain dengan AI
-            </button>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button onclick="showLoginModal()" class="px-10 py-4 border border-[#8d6e63] text-[#8d6e63] rounded-full font-medium hover:bg-white transition">Masuk</button>
+                <button onclick="showRegisterModal()" class="px-10 py-4 bg-[#8d6e63] text-white rounded-full font-medium hover:bg-[#6d574e] transition">Daftar</button>
+            </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Modal -->
-    <div id="modal" class="hidden fixed inset-0 bg-black/70 flex items-center justify-center z-[100] p-4">
-        <div id="modalContent" class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl"></div>
+    <!-- DASHBOARD -->
+    <div id="dashboardPage" class="hidden min-h-screen bg-[#f5f0e8]">
+        <div class="flex h-screen">
+            
+            <!-- Sidebar Kiri (Diperkecil) -->
+            <div class="w-60 bg-white border-r border-[#d4c4b0] p-5 flex flex-col">
+                <div class="mb-10">
+                    <h1 class="logo-font text-2xl font-bold tracking-tight text-[#8d6e63]">MY DREAMS</h1>
+                </div>
+                
+                <div class="space-y-1 flex-1 text-sm">
+                    <a href="#" onclick="showCategory('baju')" class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f0e8] font-medium">👕 Baju</a>
+                    <a href="#" onclick="showCategory('celana')" class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f0e8] font-medium">👖 Celana</a>
+                    <a href="#" onclick="showCategory('dress')" class="flex items-center gap-3 px-4 py-3 rounded-2xl hover:bg-[#f5f0e8] font-medium">👗 Dress</a>
+                </div>
+
+                <button onclick="logout()" class="mt-8 w-full py-3 text-red-700 hover:bg-red-50 rounded-2xl font-medium flex items-center justify-center gap-2">
+                    <i class="fas fa-sign-out-alt"></i> Keluar
+                </button>
+            </div>
+
+            <!-- Konten Utama -->
+            <div class="flex-1 p-6 overflow-auto">
+                <div id="mainContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Login -->
+    <div id="loginModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[200]">
+        <div class="bg-white rounded-3xl p-10 max-w-sm w-full relative">
+            <button onclick="closeModals()" class="absolute top-5 right-5 text-3xl text-gray-400 hover:text-gray-600">×</button>
+            <div class="flex justify-center mb-8">
+                <h1 class="logo-font text-4xl font-bold tracking-tight text-[#8d6e63]">MY DREAMS</h1>
+            </div>
+            <h2 class="text-2xl font-semibold mb-6 text-center text-[#4a3f35]">Masuk ke Akun</h2>
+            <input id="username" type="text" placeholder="Username" class="w-full p-4 border border-[#d4c4b0] rounded-2xl mb-4 focus:border-[#8d6e63] outline-none">
+            <input id="password" type="password" placeholder="Password" class="w-full p-4 border border-[#d4c4b0] rounded-2xl mb-6 focus:border-[#8d6e63] outline-none">
+            <button onclick="login()" class="w-full py-4 bg-[#8d6e63] text-white rounded-3xl font-semibold hover:bg-[#6d574e]">Masuk</button>
+        </div>
+    </div>
+
+    <!-- Modal Register -->
+    <div id="registerModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[200]">
+        <div class="bg-white rounded-3xl p-10 max-w-sm w-full relative">
+            <button onclick="closeModals()" class="absolute top-5 right-5 text-3xl text-gray-400 hover:text-gray-600">×</button>
+            <div class="flex justify-center mb-8">
+                <h1 class="logo-font text-4xl font-bold tracking-tight text-[#8d6e63]">MY DREAMS</h1>
+            </div>
+            <h2 class="text-2xl font-semibold mb-6 text-center text-[#4a3f35]">Daftar Akun Baru</h2>
+            <input type="text" placeholder="Nama Lengkap" class="w-full p-4 border border-[#d4c4b0] rounded-2xl mb-4">
+            <input type="email" placeholder="Email" class="w-full p-4 border border-[#d4c4b0] rounded-2xl mb-4">
+            <input type="text" placeholder="Username" class="w-full p-4 border border-[#d4c4b0] rounded-2xl mb-6">
+            <button onclick="register()" class="w-full py-4 bg-[#8d6e63] text-white rounded-3xl font-semibold hover:bg-[#6d574e]">Daftar</button>
+        </div>
+    </div>
+
+    <!-- Modal Tambah Koleksi -->
+    <div id="addModal" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center z-[300]">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full relative">
+            <button onclick="closeAddModal()" class="absolute top-4 right-4 text-3xl text-gray-400 hover:text-gray-600">×</button>
+            <h2 id="addModalTitle" class="text-2xl font-semibold mb-6">Tambah Koleksi Baru</h2>
+            
+            <input id="itemName" type="text" placeholder="Nama item" class="w-full p-4 border border-[#d4c4b0] rounded-2xl mb-4">
+            <input id="itemPrice" type="text" placeholder="Harga (Rp)" class="w-full p-4 border border-[#d4c4b0] rounded-2xl mb-6">
+            
+            <div class="mb-6">
+                <label class="block text-sm mb-2">Foto Koleksi</label>
+                <input id="itemPhoto" type="file" accept="image/*" class="w-full">
+                <img id="photoPreview" class="hidden mt-4 w-full h-48 object-cover rounded-2xl border">
+            </div>
+
+            <button onclick="saveNewItem()" class="w-full py-4 bg-[#8d6e63] text-white rounded-3xl font-semibold">Simpan Koleksi</button>
+        </div>
     </div>
 
     <script>
-        // ==================== SLIDESHOW ====================
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.slide');
+        let currentCategory = '';
+        let collections = JSON.parse(localStorage.getItem('collections')) || {
+            baju: [],
+            celana: [],
+            dress: []
+        };
 
-        function showSlide(index) {
-            slides.forEach(s => s.classList.remove('active'));
-            slides[index].classList.add('active');
-            currentSlide = index;
-        }
-        setInterval(() => showSlide((currentSlide + 1) % slides.length), 5800);
-
-        // ==================== AUTH SYSTEM ====================
-        let currentUser = null;
-
-        function openLogin() {
-            const html = `
-                <div class="p-8 relative">
-                    <button onclick="closeModal()" class="modal-close absolute top-5 right-5 text-3xl text-gray-400 hover:text-pink-600">
-                        ×
-                    </button>
-                    <div class="text-center mb-8">
-                        <span class="text-4xl">🌸</span>
-                        <h2 class="text-2xl font-semibold text-pink-600 mt-4">Selamat Datang Kembali</h2>
-                    </div>
-                    <div class="space-y-5">
-                        <input id="loginEmail" type="email" placeholder="Email atau No. HP" 
-                               class="w-full px-5 py-4 border border-pink-200 rounded-2xl focus:outline-none focus:border-pink-400 text-base">
-                        <input id="loginPassword" type="password" placeholder="Kata Sandi" 
-                               class="w-full px-5 py-4 border border-pink-200 rounded-2xl focus:outline-none focus:border-pink-400 text-base">
-                        
-                        <button onclick="handleLogin()" 
-                                class="w-full py-4 bg-pink-600 text-white rounded-3xl font-medium hover:bg-pink-700 transition text-lg">
-                            Masuk
-                        </button>
-                        
-                        <p class="text-center text-sm text-gray-500">
-                            Belum punya akun? 
-                            <span onclick="switchToRegister()" class="text-pink-600 cursor-pointer hover:underline font-medium">Daftar Gratis</span>
-                        </p>
-                    </div>
-                </div>
-            `;
-            document.getElementById('modalContent').innerHTML = html;
-            document.getElementById('modal').classList.remove('hidden');
+        function saveCollections() {
+            localStorage.setItem('collections', JSON.stringify(collections));
         }
 
-        function openRegister() {
-            const html = `
-                <div class="p-8 relative">
-                    <button onclick="closeModal()" class="modal-close absolute top-5 right-5 text-3xl text-gray-400 hover:text-pink-600">
-                        ×
-                    </button>
-                    <div class="text-center mb-8">
-                        <span class="text-4xl">🌸</span>
-                        <h2 class="text-2xl font-semibold text-pink-600 mt-4">Buat Akun Baru</h2>
-                    </div>
-                    <div class="space-y-5">
-                        <input id="regEmail" type="email" placeholder="Email atau No. HP" 
-                               class="w-full px-5 py-4 border border-pink-200 rounded-2xl focus:outline-none focus:border-pink-400">
-                        <input id="regPassword" type="password" placeholder="Kata Sandi" 
-                               class="w-full px-5 py-4 border border-pink-200 rounded-2xl focus:outline-none focus:border-pink-400">
-                        <input id="regConfirmPassword" type="password" placeholder="Konfirmasi Kata Sandi" 
-                               class="w-full px-5 py-4 border border-pink-200 rounded-2xl focus:outline-none focus:border-pink-400">
-                        
-                        <button onclick="handleRegister()" 
-                                class="w-full py-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl font-medium hover:brightness-110 transition text-lg">
-                            Daftar Gratis
-                        </button>
-                    </div>
-                </div>
-            `;
-            document.getElementById('modalContent').innerHTML = html;
-            document.getElementById('modal').classList.remove('hidden');
+        function showLoginModal() { document.getElementById('loginModal').classList.remove('hidden'); }
+        function showRegisterModal() { document.getElementById('registerModal').classList.remove('hidden'); }
+        function closeModals() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('registerModal').classList.add('hidden');
         }
 
-        function handleRegister() {
-            const email = document.getElementById('regEmail').value.trim();
-            const password = document.getElementById('regPassword').value;
-            const confirm = document.getElementById('regConfirmPassword').value;
-
-            if (!email || !password) return alert("Email dan Password wajib diisi");
-            if (password !== confirm) return alert("Konfirmasi password tidak cocok");
-            if (password.length < 6) return alert("Password minimal 6 karakter");
-
-            localStorage.setItem('myDreamsUser', JSON.stringify({ email, password }));
-            alert("🎉 Pendaftaran berhasil!");
-            closeModal();
-            setTimeout(openLogin, 500);
+        function login() {
+            closeModals();
+            document.getElementById('landingPage').classList.add('hidden');
+            document.getElementById('dashboardPage').classList.remove('hidden');
+            showCategory('baju');
         }
 
-        function handleLogin() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-
-            const savedUser = JSON.parse(localStorage.getItem('myDreamsUser'));
-
-            if (savedUser && savedUser.email === email && savedUser.password === password) {
-                currentUser = savedUser;
-                alert(`✅ Login berhasil! Selamat datang, ${email}`);
-                closeModal();
-                updateAuthButtons();
-            } else {
-                alert("❌ Email atau password salah");
-            }
-        }
-
-        function updateAuthButtons() {
-            const div = document.getElementById('authButtons');
-            div.innerHTML = `
-                <button onclick="logout()" class="px-7 py-3 border border-pink-300 rounded-3xl text-pink-600 hover:bg-pink-50 transition-all font-medium">
-                    Keluar (${currentUser.email})
-                </button>
-            `;
+        function register() {
+            alert("🎉 Akun berhasil dibuat!");
+            closeModals();
+            showLoginModal();
         }
 
         function logout() {
-            if (confirm("Yakin ingin keluar?")) {
-                currentUser = null;
-                localStorage.removeItem('myDreamsUser');
-                document.getElementById('authButtons').innerHTML = `
-                    <button onclick="openLogin()" class="px-7 py-3 border border-pink-300 rounded-3xl text-pink-600 hover:bg-pink-50 transition-all font-medium">Masuk</button>
-                    <button onclick="openRegister()" class="px-7 py-3 bg-gradient-to-r from-pink-500 to-purple-500 text-white rounded-3xl hover:scale-105 transition-all font-medium shadow-lg">Daftar Gratis</button>
-                `;
+            if (confirm("Keluar dari akun?")) {
+                document.getElementById('dashboardPage').classList.add('hidden');
+                document.getElementById('landingPage').classList.remove('hidden');
             }
         }
 
-        function switchToRegister() {
-            closeModal();
-            setTimeout(openRegister, 400);
+        function showCategory(category) {
+            currentCategory = category;
+            let html = `<h2 class="text-3xl font-semibold mb-6 text-[#4a3f35] capitalize">${category}</h2>`;
+            html += `<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">`;
+
+            // Kotak Tambah Koleksi
+            html += `
+                <div onclick="openAddModal()" 
+                     class="border-2 border-dashed border-[#8d6e63] rounded-3xl h-80 flex flex-col items-center justify-center cursor-pointer hover:bg-[#f5f0e8]">
+                    <div class="text-6xl mb-3 text-[#8d6e63]">+</div>
+                    <p class="text-[#8d6e63] font-medium">Tambah ${category} Baru</p>
+                </div>`;
+
+            // Tampilkan koleksi yang sudah ada
+            collections[category].forEach((item, index) => {
+                html += `
+                    <div class="bg-white rounded-3xl overflow-hidden shadow-sm relative">
+                        <img src="${item.photo || 'https://picsum.photos/id/1015/300/400'}" class="w-full h-64 object-cover">
+                        <div class="p-4">
+                            <h4 class="font-medium">${item.name}</h4>
+                            <p class="text-[#8d6e63] font-semibold">Rp ${item.price}</p>
+                        </div>
+                        <button onclick="deleteItem('${category}', ${index}); event.stopImmediatePropagation();" 
+                                class="absolute top-3 right-3 bg-red-500 text-white w-7 h-7 rounded-full flex items-center justify-center text-xs">×</button>
+                    </div>`;
+            });
+
+            html += `</div>`;
+            document.getElementById('mainContent').innerHTML = html;
         }
 
-        function showComingSoon(feature) {
-            const html = `
-                <div class="p-10 relative text-center">
-                    <button onclick="closeModal()" class="modal-close absolute top-5 right-5 text-3xl text-gray-400 hover:text-pink-600">
-                        ×
-                    </button>
-                    <div class="text-6xl mb-6">🌸</div>
-                    <h2 class="text-2xl font-semibold text-pink-600 mb-3">${feature}</h2>
-                    <p class="text-gray-600">Fitur ini sedang dalam pengembangan.<br>Kami akan segera menghadirkan fitur ini.</p>
-                    <button onclick="closeModal()" class="mt-8 px-10 py-4 bg-pink-600 text-white rounded-3xl hover:bg-pink-700 transition">Mengerti</button>
-                </div>
-            `;
-            document.getElementById('modalContent').innerHTML = html;
-            document.getElementById('modal').classList.remove('hidden');
+        function openAddModal() {
+            document.getElementById('addModalTitle').textContent = `Tambah ${currentCategory} Baru`;
+            document.getElementById('itemName').value = '';
+            document.getElementById('itemPrice').value = '';
+            document.getElementById('itemPhoto').value = '';
+            document.getElementById('photoPreview').classList.add('hidden');
+            document.getElementById('addModal').classList.remove('hidden');
         }
 
-        function closeModal() {
-            document.getElementById('modal').classList.add('hidden');
+        function closeAddModal() {
+            document.getElementById('addModal').classList.add('hidden');
         }
 
-        // Inisialisasi
+        // Preview foto
+        document.getElementById('itemPhoto').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    const preview = document.getElementById('photoPreview');
+                    preview.src = ev.target.result;
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function saveNewItem() {
+            const name = document.getElementById('itemName').value.trim();
+            const price = document.getElementById('itemPrice').value.trim();
+            const photoInput = document.getElementById('itemPhoto');
+
+            if (!name || !price) {
+                alert("Nama dan harga harus diisi");
+                return;
+            }
+
+            let photo = '';
+            if (photoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    photo = e.target.result;
+                    addItemToCollection(name, price, photo);
+                };
+                reader.readAsDataURL(photoInput.files[0]);
+            } else {
+                addItemToCollection(name, price, '');
+            }
+        }
+
+        function addItemToCollection(name, price, photo) {
+            collections[currentCategory].push({ name, price, photo });
+            saveCollections();
+            closeAddModal();
+            showCategory(currentCategory);   // refresh tampilan
+        }
+
+        function deleteItem(category, index) {
+            if (confirm("Hapus item ini?")) {
+                collections[category].splice(index, 1);
+                saveCollections();
+                showCategory(category);
+            }
+        }
+
+        function saveCollections() {
+            localStorage.setItem('collections', JSON.stringify(collections));
+        }
+
         window.onload = () => {
-            const savedUser = JSON.parse(localStorage.getItem('myDreamsUser'));
-            if (savedUser) {
-                currentUser = savedUser;
-                updateAuthButtons();
-            }
-            console.log("%c🌸 MY Dreams - Login System aktif dengan tombol X", "color:#db2777");
+            console.log("%cMY Dreams - Kotak tambah koleksi sudah diperbaiki", "color:#8d6e63");
         };
     </script>
 </body>
